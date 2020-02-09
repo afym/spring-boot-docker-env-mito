@@ -1,0 +1,3 @@
+docker login --username=yourhubusername --password=yourpassword
+docker build -t yourhubusername/student-api:1.0.1 .
+docker push yourhubusername/student-api:1.0.1

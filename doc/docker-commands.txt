@@ -1,0 +1,11 @@
+docker run --network clase02_sonarnet --link sonarqube -it --rm --name \
+    sonarscanner -v "./:/usr/src/mymaven" \
+    -w /usr/src/mymaven maven:3.6.3-jdk-11-slim bash
+
+docker run --name postgres -p 5432:5432 -e POSTGRES_PASSWORD=mysecretpassword -d postgres:9.6.16-alpine
+
+#-Dsonar.language=java
+#-Dsonar.java.source=$(pwd)/src/main/java
+#-Dsonar.java.binaries=$(pwd)/target/classes
+#-Dsonar.exclusions=**/exception/*,**/*Test.java
+#-Dsonar.coverage.jacoco.xmlReportPaths=$(pwd)/target/site/jacoco/jacoco.xml

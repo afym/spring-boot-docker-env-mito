@@ -1,0 +1,21 @@
+version: '3.1'
+
+services:
+  maven:
+    image: maven:3.6.3-jdk-11-slim
+    command: sh /tmp/testing.sh
+    volumes:
+      - ./src:/tmp/src
+      - ./pom.xml:/tmp/pom.xml
+      - ./testing.sh:/tmp/testing.sh
+      - ./target:/tmp/target
+      - mvn2_conf:/root/.m2
+    networks:
+      - sonar_sonarnet
+
+networks:
+  sonar_sonarnet:
+    external: true
+
+volumes:
+  mvn2_conf:
