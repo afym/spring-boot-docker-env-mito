@@ -2,8 +2,10 @@ version: '3.1'
 
 services:
   api:
-    image: angelfym/student-api:1.2.4
+    image: angelfym/student-api:1.2.5
     restart: always
+    networks:
+      - apinet
     ports:
       - 8912:5000
     environment:
@@ -13,10 +15,30 @@ services:
       DATABASE_USERNAME: postgres
       DATABASE_PASSWORD: superootpassword
 
+  frontend-inside:
+    image: angelfym/student-frontend:1.0.7-inside
+    networks:
+      - apinet
+    ports:
+      - 8018:80
+
+  frontend:
+    image: angelfym/student-frontend:1.0.7
+    networks:
+      - apinet
+    ports:
+      - 8089:80
+
   db:
     image: postgres:9.6.16-alpine
     restart: always
+    networks:
+      - apinet
     ports:
       - 7789:5432
     environment:
       POSTGRES_PASSWORD: superootpassword
+
+networks:
+  apinet:
+    driver: bridge

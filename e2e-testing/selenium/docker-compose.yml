@@ -1,0 +1,35 @@
+version: '3.1'
+
+services:
+  firefox:
+    image: selenium/node-firefox:3.14.0-gallium
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - hub
+    environment:
+      HUB_HOST: hub
+    networks:
+      - spring-boot-docker-env-mito_apinet
+
+  chrome:
+    image: selenium/node-chrome:3.14.0-gallium
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - hub
+    environment:
+      HUB_HOST: hub
+    networks:
+      - spring-boot-docker-env-mito_apinet
+
+  hub:
+    image: selenium/hub:3.14.0-gallium
+    ports:
+      - "4444:4444"
+    networks:
+      - spring-boot-docker-env-mito_apinet
+
+networks:
+  spring-boot-docker-env-mito_apinet:
+    external: true
