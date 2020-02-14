@@ -40,9 +40,9 @@ public class ListStudents {
         this.listStudentHttp.make();
     }
 
-    @Then("Obtuvo la lista de usuarios")
+    @Then("obtuvo la lista de usuarios")
     public void obtuvo_la_lista_de_usuarios() throws IOException {
         List<Student> students = this.listStudentHttp.getStudents();
-        assertTrue(students.size() > 0);
+        assertTrue(students.size() == 3);
     }
 }
