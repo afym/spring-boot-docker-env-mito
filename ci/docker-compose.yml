@@ -1,0 +1,10 @@
+docker run -it --rm --privileged --name dockerindocker -v //var/run/docker.sock:/var/run/docker.sock docker
+docker run -d -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts
+
+
+docker run -it --rm --privileged --name dockerindocker -v //var/run/docker.sock:/var/run/docker.sock -p 8080:8080 -p 50000:50000 jenkins/jenkins:lts
+
+
+-v jenkins_home:/var/jenkins_home 
+
+docker container rm $(docker container ls -aq)
