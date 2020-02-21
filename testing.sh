@@ -11,5 +11,5 @@ echo "Ejecutando testing calidad sonarqube"
 # http://192.168.99.101:9000 (Docker for toolbox) Usa la IP!!!
 mvn sonar:sonar \
   -Dsonar.projectKey=api-student \
-  -Dsonar.host.url=http://sonarqube:9000 \
+  -Dsonar.host.url=http://192.168.99.101:9000 \
   -Dsonar.login=2dd2a221f059dfb2cf94a8ca7142b1353c592a1b

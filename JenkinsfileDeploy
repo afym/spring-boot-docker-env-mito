@@ -1,0 +1,36 @@
+pipeline {
+
+    agent any
+
+    environment {
+        STACK_NAME = "${params.STACK_NAME}"
+        SERVICE_BACKEND = "${STACK_NAME}_api"
+        SERVICE_FRONTEND = "${STACK_NAME}_web"
+        STACK_VERSION = "${params.STACK_VERSION}"
+        DEPLOY_TO_BACKEND = "${params.DEPLOY_TO_BACKEND}"
+        DEPLOY_TO_FRONTEND = "${params.DEPLOY_TO_FRONTEND}"
+        APPLICATION_SERVER = "${params.APPLICATION_SERVER}"
+        APPLICATION_PEM = "/var/lib/jenkins/pems/application.pem"
+        INTERNAL_DOCKER_BACKEND = "dockerhubuser2020/api-student:${STACK_VERSION}"
+        INTERNAL_DOCKER_FRONTEND = "dockerhubuser2020/web-student:${STACK_VERSION}"
+    }
+
+    stages {
+
+        stage('Deploy stack backend') {
+           when { environment name: 'DEPLOY_TO_BACKEND', value: 'yes' }
+           steps {
+               sh "ssh -o StrictHostKeyChecking=no -i ${APPLICATION_PEM} ec2-user@${APPLICATION_SERVER} \"docker service update --image ${INTERNAL_DOCKER_BACKEND} ${SERVICE_BACKEND}\""
+           }
+        }
+
+        stage('Deploy stack frontend') {
+            when { environment name: 'DEPLOY_TO_FRONTEND', value: 'yes' }
+           steps {
+               sh "ssh -o StrictHostKeyChecking=no -i ${APPLICATION_PEM} ec2-user@${APPLICATION_SERVER} \"docker service update --image ${INTERNAL_DOCKER_FRONTEND} ${SERVICE_FRONTEND}\""
+           }
+        }
+    }
+}
+
+

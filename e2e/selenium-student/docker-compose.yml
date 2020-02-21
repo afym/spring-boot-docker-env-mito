@@ -1,0 +1,40 @@
+version: '3.1'
+
+services:
+  firefox:
+    image: selenium/node-firefox:3.14.0-gallium
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - hub
+    environment:
+      HUB_HOST: hub
+    # activar cuando no usen docker toolbox
+    # docker network ls
+    #networks:
+    #  - spring-boot-docker-env-mito_apinet
+
+  chrome:
+    image: selenium/node-chrome:3.14.0-gallium
+    volumes:
+      - /dev/shm:/dev/shm
+    depends_on:
+      - hub
+    environment:
+      HUB_HOST: hub
+    # activar cuando no usen docker toolbox
+    #networks:
+    #  - spring-boot-docker-env-mito_apinet
+
+  hub:
+    image: selenium/hub:3.14.0-gallium
+    ports:
+      - "4444:4444"
+    # activar cuando no usen docker toolbox
+    #networks:
+    #  - spring-boot-docker-env-mito_apinet
+
+# activar cuando no usen docker toolbox
+#networks:
+#  spring-boot-docker-env-mito_apinet:
+#    external: true

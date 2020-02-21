@@ -2,12 +2,12 @@ version: '3.1'
 
 services:
   api:
-    image: angelfym/student-api-c3:1.2.6
+    image: {{BACKEND_DOCKER_IMAGE}}
     restart: always
     networks:
       - apinet
     ports:
-      - 8912:5000
+      - 9998:5000
     environment:
       DATABASE_HOST: db
       DATABASE_PORT: 5432
@@ -16,27 +16,17 @@ services:
       DATABASE_PASSWORD: superootpassword
 
   frontend:
-    image: angelfym/student-frontend-c3:1.2.5
+    image: {{FRONTEND_DOCKER_IMAGE}}
     networks:
-      - apinet
+      - apinet    
     ports:
-      - 8089:80
-
-# solo para hacer pruebas internas con selnium hub
- # frontend-inside:
- #   image: angelfym/student-frontend-c3:1.2.5-inside
- #   networks:
- #     - apinet
- #   ports:
- #     - 8018:80
+      - 9999:80
 
   db:
     image: postgres:9.6.16-alpine
     restart: always
     networks:
       - apinet
-    ports:
-      - 7789:5432
     environment:
       POSTGRES_PASSWORD: superootpassword
 

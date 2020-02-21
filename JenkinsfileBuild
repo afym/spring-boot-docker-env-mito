@@ -1,0 +1,46 @@
+pipeline {
+
+    agent any
+
+    environment {
+        EXTERNAL_HOST_API = "http://${params.EXTERNAL_HOST_API}:8080"
+        INTERNAL_DOCKER_BACKEND = "dockerhubuser2020/api-student:${env.BUILD_NUMBER}"
+        INTERNAL_DOCKER_FRONTEND = "dockerhubuser2020/web-student:${env.BUILD_NUMBER}"
+    }
+
+    stages {
+
+        stage('Set environment') {
+           steps {
+               dir("${env.WORKSPACE}/frontend") {
+                  sh 'cp -rf ./src/serviceConnection.dist ./src/serviceConnection.js'
+                  sh "sed -i 's@{{API_STUDENT_URL}}@${EXTERNAL_HOST_API}@g' ./src/serviceConnection.js"
+                  sh "cat ./src/serviceConnection.js"
+               }
+           }
+        }
+
+        stage('Build backend image') {
+           steps {
+               sh "docker build -t ${INTERNAL_DOCKER_BACKEND} ."
+               withCredentials([usernamePassword( credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh "docker login -u ${USERNAME} -p ${PASSWORD}"
+                    sh "docker push ${INTERNAL_DOCKER_BACKEND}"
+               }
+           }
+        }
+
+        stage('Build frontend image') {
+           steps {
+               sh "docker build -t ${INTERNAL_DOCKER_FRONTEND} ./frontend/"
+
+               withCredentials([usernamePassword( credentialsId: 'dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                    sh "docker login -u ${USERNAME} -p ${PASSWORD}"
+                    sh "docker push ${INTERNAL_DOCKER_FRONTEND}"
+               }
+           }
+        }
+    }
+}
+
+

@@ -1,0 +1,6 @@
+docker-machine stop
+docker-machine rm default
+docker-machine create -d virtualbox --virtualbox-memory=4096 --virtualbox-cpu-count=2 --virtualbox-disk-size=50000 default
+# cerrar el terminal
+docker-machine ssh
+sudo sysctl -w vm.max_map_count=262144
